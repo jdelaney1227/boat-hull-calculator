@@ -1,0 +1,394 @@
+Final Project: Pick a Project
+Computer Science - Week 10
+Oct 3, 2026 - Version 0.0.2
+Please make sure to your UD email AND name is below. Unless your UD emails are included in this table, then you will not earn any points for this assignment when it is graded! Every person should submit their own individual worksheet.
+
+Talk about each of the questions with a friend or our LLM (or both), but make sure the words you enter below are yours (with the obvious exceptions notwithstanding). Brainstorming is best done in full sentences, and the main goal here is brainstorming. It's worth reviewing the information in this series of pages in the Drafter documentation to gain a better understanding of the process.
+
+Role
+Name
+Email
+Developer (You)
+Jack Delaney
+jackdel@udel.edu
+Friend (optional)
+LLM
+
+
+
+
+Part 1: The Goal & Prior Implementations
+Identify the Goal: What specific goal are you trying to address? Think about your passions, hobbies, and academic interests. The latter are an excellent candidate to focus on. Some majors have suggestions listed below: these were provided by faculty in those departments. Other majors could consider a focus tied to a big final assignment in one of their recent courses in their major. 
+Biomedical Engineering majors may consider one of the following: 
+If you have started (or completed) the Cell/Tissue Design final project in BMEG100, design an organoid, which involves combining a cell type, biomaterial, and testing method. Have the website include a description and diagram of your design concept, a testing method, a needs statement, and an impact statement relevant to their organoid. Also include a link to a paper that supports your idea and a paragraph describing how that paper supports your design concept.
+Otherwise, create a website related to your BMEG100 Lab Report 1, Cytoskeletal and Nuclear Staining Lab Report Guidelines, linked here (University of Delaware account required to access).
+Chemistry and Chemical Engineering majors may consider creating an automated chemistry assistant that takes balanced reaction equations, starting reactant masses, and a harvested product amount to determine the limiting reactant, theoretical yield, and percent yield based on principles from Chemistry 2e (OpenStax) — Chapter 4: Chemical Reactions and Stoichiometry. To avoid manually compiling atomic mass tables or writing custom string tokenizers, use the ChemPy library to parse molecular formulas into exact molecular weights and verify reaction stoichiometry against compound data from the NIH PubChem Database. The program outputs an organized breakdown of limiting reagent status, product yields, and remaining masses of unreacted species. Also use the heat of the reaction to determine if it is exothermic or endothermic, and compute the heat flow per mole of the product.
+Majors in the Electric & Computer Engineering department may consider a steganography project that hides messages in images, and then retrieves those messages from uploaded images. 
+Mechanical Engineering majors may consider a project that somehow uses both the NumPy and SciPy Python libraries. 
+My goal is to calculate boat information from user input, including whether it will float, whether it can operate in salt water, fresh water, and other environments, and useful details such as how much cargo it can hold.
+
+
+Prior Implementations: Search the internet. What existing tools or websites currently attempt to address it?
+Speed calculators for hulls exist online; to differentiate my application, I must provide more, and possibly more abstract, information.
+
+
+Your Implementation: Briefly describe the legitimate purpose or functionality of your site. How would you want this web application to be used?
+I want boatmakers to use this application to determine the hull functionality they want before manufacturing.
+
+
+Part 2: The Input-Process-Output (IPO) Model
+Think about the fundamental flow of your program.
+The Core Goal: Every program has three main phases: taking input, processing data, and presenting output. In one sentence, what is the ultimate goal your program will accomplish for the user? Be specific and use CS1 concepts.
+The program takes a hull’s dimensions, weight, and water type, uses if statements to decide whether the hull floats, and calculates how much cargo it can carry, storing each design in a list of Hull dataclass instances so the user can compare them. 
+
+
+
+Input: What specific information will the user need to provide to your program? (e.g., a city name, a numerical budget, a list of hobbies).
+Hull name, length, beam, depth, and empty weight, typed into text boxes, plus the water type (salt or fresh) picked from a drop-down menu.
+
+
+
+Processing: At a high level, how will the computer manipulate or evaluate that data? (e.g., calculate the average, filter out options that are too expensive, compare the input against a database).
+The program looks up the water density, then calculates the maximum weight the hull could displace when filled to its full depth. If the hull’s weight is under that, it floats. The difference is the cargo capacity. It also checks for invalid inputs, like negative or non-numeric values. 
+
+
+
+Output: What will the user get back? (e.g., a recommendation, a calculated safety factor, a formatted schedule).
+A float or sink verdict, the cargo capacity, a list of all saved hulls, and a summary showing which hull carries the most.
+
+
+
+Part 3: Data Abstraction
+Identify the "nouns" of your problem.
+Representing Reality: Abstraction is the process of representing the real world inside a computer by ignoring unnecessary details. What are the core "things" (nouns) your program needs to track? (e.g., If building a recipe app, the nouns are "Recipe" and "Ingredient").
+Hull
+
+
+
+Identifying Properties: For the most important "thing" you listed above, what 3 to 4 specific details do you actually need to solve your problem, and what details will you abstract away?
+Details I need: (e.g., Ingredient name, weight, cost)
+Details I will ignore: (e.g., Ingredient color, brand, expiration date)
+Need: Length, beam, depth, empty weight
+Ignore: Shape, material, engine, price
+
+
+Part 4: Challenges, AI Strategy, & Goals
+Difficulties: What parts of this project seem the most difficult or technically complex?
+The State and transitioning cleanly between routes, plus and unit testing every route function.
+
+
+Coding Strategy: If you will be using an LLM to help code, how will you ensure you understand the generated code and avoid "hallucinations" or "shallow learning" (copying without understanding)? If you won't be using an LLM to help code, this project might take about 4 hours a week to complete, so list each of the days and times in which you work on the project. 
+Ask for explanations of why the code is written the way it is and what it does while it runs, rather than unthinkingly copying and pasting.
+
+
+Goals: What is your ultimate goal for this project? (e.g., Impress the graders with a creative UI, build something I can use in my other classes, learn Drafter deeply).
+Build an app I'm interested in, and that aligns with the path I want to take in the industry.
+
+
+Part 5: Research & Brainstorming Conversation
+Have a conversation with a Generative AI tool (like ChatGPT or Claude) OR a friend about your project idea. Do not ask for code. Instead, use the AI/friend as a sounding board to research your problem.
+The Initial Prompt/Question: Ask the AI or your friend to help you brainstorm. (e.g., "I want to build a simple web tool to help students track their study hours. What are 3 common problems students face when tracking their time, and what are 3 simple features a basic tool should have?"). Paste your prompt below:
+I want to build a simple web tool to see whether a boat hull can float. What are common problems boatmen face when trying to design a boat hull, and what simple features should a basic tool have?
+
+
+
+The Response: Briefly summarize the best ideas the AI or your friend suggested. What existing solutions or prior apps did they mention?
+Calculations I can use, add-ons I can consider, what is difficult, what can help me, example calculations.
+
+
+
+The Pushback: You must reply to the AI/friend to narrow the scope when it's over-ambitious. Pick the most complex feature they suggested and explain why it is too complicated for an introductory programming project. Ask them for a simpler alternative. Paste your response here:
+The motor mass is a little over-ambitious, adding too much to the application when we are focusing on building a hull, can we use a simpler alternative?
+
+
+
+Reflection: Based on this conversation, how has your project idea changed or become more focused?
+The LLM was able to broaden my idea and grab many other features that will be helpful in choosing my application over other calculators with its features that were added.
+
+
+Part 6: Resource Planning
+What resources will you use if you get stuck? 
+The LLM
+
+
+If your LLM provides code that causes a Drafter or Bakery error, or if you run into a problem during deployment, what is your step-by-step debugging plan to resolve it?
+Look at the error message and go to the line and try to understand what is going on from the error message alone and if I can not understand the issue, I will send it to the LLM to ask what is wrong with the code.
+
+
+
+Part 7: LLM Conversation
+If you used an LLM in any part of this work, copy and paste every part of that conversation below. Otherwise, you may be given a zero for the assignment. Obviously, these words will not all be yours, and this is the exception to the requirement at the top of this assignment that all responses be in your own words. If you did not use an LLM to assist you in this assignment, simply say so below.
+Only used LLM for Part 5:
+I want to build a simple web tool to see whether a boat hull can float. What are common problems boatmen face when trying to design a boat hull, and what simple features should a basic tool have?
+For your boat hull flotation tool, I recommend focusing on one main question: “Given a boat's dimensions, weight, and the amount of water it displaces, will it float?”
+Since this is a CS1 project using Drafter, you can build a useful tool with basic Python calculations, numerical inputs, and clear visual feedback. You don't need to simulate complex fluid physics or build a realistic 3D boat.
+1. Common Problems People Face When Designing Boat Hulls
+Here are five problems your application could help users understand.
+Problem 1: Determining Whether a Boat Will Float
+A boat designer needs to know whether the hull displaces enough water to support the boat's total weight.
+Why it's difficult: The relationship between the hull's shape, the volume of water displaced, and the boat's weight can be unintuitive.
+How your tool helps: Calculate the maximum supported weight for a simplified hull model and compare it with the boat's total weight.
+Example: A small boat might float when empty but sink too deeply when passengers and equipment are added.
+Problem 2: Choosing the Right Hull Dimensions
+The length, width, and depth of a hull affect how much water it can displace.
+Why it's difficult: Changing one dimension can affect the boat's capacity and how deeply it sits in the water.
+How your tool helps: Let users enter hull dimensions and see how the estimated displacement changes.
+For a beginner-friendly project, you could approximate the hull as a rectangular box rather than attempting to calculate the volume of a complex hull shape.
+Problem 3: Accounting for the Boat's Total Weight
+A boat's weight includes more than its hull.
+Why it's difficult: Designers must account for the hull, motor, passengers, fuel, and cargo.
+How your tool helps: Let users enter these weights separately and calculate their total.
+For example:
+Component
+Weight
+Hull
+80 kg
+Motor
+20 kg
+Passengers
+150 kg
+Equipment
+25 kg
+Total
+275 kg
+
+The application can use this total to estimate how deeply the boat will sit in the water.
+Problem 4: Understanding How Deep the Boat Will Sit
+A boat can float without necessarily having enough of its hull above the water.
+Why it's difficult: A boat that technically floats might sit too low in the water to be practical or safe.
+How your tool helps: Estimate the submerged portion of the hull and show the remaining height above the water.
+You could display a simple illustration of a boat hull with a waterline.
+Problem 5: Understanding the Effect of Added Cargo
+Adding passengers or cargo increases the boat's total weight.
+Why it's difficult: Users may not realize how quickly additional weight reduces the hull's remaining capacity.
+How your tool helps: Include a passenger-and-cargo input and recalculate the result whenever the user changes the weight.
+This feature would make the application interactive without requiring complicated programming.
+
+2. What Simple Features Should Your Tool Have?
+I recommend starting with four core features and adding optional improvements only if you have time.
+Feature 1: Hull Dimension Inputs
+Allow the user to enter:
+Length of the hull in meters.
+Width of the hull in meters.
+Height of the hull in meters.
+For the first version, approximate the hull as a rectangular box.
+The estimated volume is:
+V=L×W×H
+V=L×W×H
+Where:
+V
+V = approximate volume in cubic meters.
+L
+L = length in meters.
+W
+W = width in meters.
+H
+H = height in meters.
+Important limitation: A real boat hull usually narrows toward the bottom and has a curved or pointed bow. A rectangular box therefore tends to overestimate the volume of water a real hull can displace. Your tool should identify this as a simplified model.
+Feature 2: Weight Calculator
+Let users enter:
+Hull weight.
+Motor weight.
+Passenger weight.
+Cargo weight.
+Calculate the total:
+Wtotal=Whull+Wmotor+Wpassengers+Wcargo
+W
+total
+​
+=W
+hull
+​
++W
+motor
+​
++W
+passengers
+​
++W
+cargo
+​
+The user could change any input and click a button to recalculate the results.
+Feature 3: Floatability Calculator
+This is the central feature of your application.
+A floating boat displaces enough water to support its total weight. This principle is known as Archimedes' principle.
+For freshwater, you can use an approximate density of
+1000 kg/m3
+1000 kg/m
+3
+.
+The mass of displaced water is:
+Mdisplaced=ρVsubmerged
+M
+displaced
+​
+=ρV
+submerged
+​
+Where:
+ρ
+ρ = water density, approximately
+1000 kg/m3
+1000 kg/m
+3
+.
+Vsubmerged
+V
+submerged
+​
+= volume of the hull below the waterline.
+For a simplified rectangular hull, you can estimate the required submerged volume:
+Vrequired=Wtotal1000
+V
+required
+​
+=
+1000
+W
+total
+​
+​
+Here, the weights are expressed in kilograms, so the result is the volume of freshwater that must be displaced in cubic meters.
+For example, if a boat weighs 300 kg:
+Vrequired=3001000=0.3 m3
+V
+required
+​
+=
+1000
+300
+​
+=0.3 m
+3
+The boat must displace approximately
+0.3 m3
+0.3 m
+3
+of freshwater to support that mass.
+Your program can compare the required submerged volume with the estimated volume available below the maximum waterline.
+Suggested output:
+Green: The simplified calculation suggests sufficient displacement.
+Yellow: The boat may be close to its estimated displacement limit.
+Red: The required displacement exceeds the modeled hull capacity.
+The thresholds should be clearly defined, and the output must not be presented as a real-world safety certification.
+Feature 4: Results and Visual Feedback
+After the user submits the inputs, display:
+Total boat weight.
+Estimated hull volume.
+Required displaced-water volume.
+Estimated remaining displacement capacity.
+A simple floatability result.
+For example:
+Example results
+Measurement
+Result
+Hull length
+3 m
+Hull width
+1 m
+Modeled hull height
+0.5 m
+Total boat mass
+300 kg
+Maximum modeled volume
+1.5 m³
+Required submerged volume
+0.3 m³
+
+For this example, the rectangular model suggests that the boat could displace enough freshwater to support its weight.
+However, that does not establish that an actual boat with these dimensions would be safe. The real hull shape, freeboard, stability, load distribution, and structural strength all matter.
+
+3. Additional Features You Could Consider
+Once the basic calculator works, consider adding one or two of these improvements.
+Feature
+What it does
+Difficulty
+Passenger calculator
+Lets users add passengers and see the effect on total mass.
+Easy
+Cargo adjustment
+Recalculates results when cargo weight changes.
+Easy
+Waterline visualization
+Shows the estimated submerged portion of a rectangular hull.
+Moderate
+Hull comparison
+Compares two sets of dimensions.
+Easy to moderate
+Saved designs
+Saves input values in browser local storage.
+Moderate
+Displacement graph
+Graphs total boat mass against required displaced volume.
+Moderate
+
+My recommendation: Implement the passenger calculator and hull comparison first. They add useful functionality while relying on concepts that are manageable for an introductory programming course.
+A graph could be a good stretch goal, but you don't need one to make the application useful.
+
+4. How I Would Build This in Drafter
+Because Drafter runs Python in the browser, your application can perform its calculations locally without needing a backend or database.
+A simple application flow would look like this:
+Step 1: Input
+The user enters the hull dimensions and the weights of the boat, motor, passengers, and cargo.
+Step 2: Process
+The application:
+Checks that the inputs are valid.
+Calculates the total mass.
+Estimates the hull's volume.
+Calculates the required displaced-water volume.
+Compares the required displacement with the modeled hull's available displacement.
+Step 3: Output
+The application displays the calculated values, a floatability estimate, and possibly a simple waterline graphic.
+You can implement the calculations with basic Python variables, arithmetic, conditionals, and functions.
+You could also use Drafter's interactive components to let users change inputs and recalculate results. No external API, login system, or database is necessary.
+
+5. What Should You Avoid for a Three-Week CS1 Project?
+Some boat-design problems are much more complicated than they initially appear.
+I would avoid these features in your first version:
+3D hull modeling: Requires complex geometry and a substantial amount of interface work.
+Realistic fluid simulation: Requires advanced mathematics and physics.
+Full stability analysis: Requires information about the hull's geometry, center of gravity, center of buoyancy, and how these change as the boat tilts.
+Automatic hull optimization: Searching for the best hull across multiple competing design constraints is substantially more complex than a basic calculator.
+Real-world safety certification: Your application cannot establish that a real boat is safe based on a few dimensions and weight estimates.
+Instead, make the application an educational tool that estimates displacement under clearly stated assumptions.
+One important distinction: floating and being stable are different things. A boat may displace enough water to float but still be unstable or unsafe.
+
+6. My Suggested Final Project Scope
+If I were planning this project for an introductory programming course, I would build the following.
+Application name: HullCheck
+Main purpose: Help users explore whether a simplified boat hull can displace enough freshwater to support a specified load.
+Core inputs:
+Hull length.
+Hull width.
+Modeled hull height.
+Hull mass.
+Motor mass.
+Passenger mass.
+Cargo mass.
+Core processing:
+Calculate the total boat mass.
+Estimate the rectangular hull's volume.
+Calculate the required displaced-water volume.
+Estimate the draft, or submerged depth, under the rectangular-hull assumption.
+Compare the result with the modeled hull's maximum displacement.
+Core outputs:
+Total boat mass.
+Estimated draft.
+Estimated height remaining above the waterline.
+Estimated displacement capacity.
+A clearly labeled result explaining whether the simplified model predicts sufficient buoyancy.
+One additional improvement I would prioritize
+Rather than simply reporting “Your boat floats,” explain why the model reaches its conclusion.
+For example:
+Your modeled hull has enough volume to displace the amount of freshwater needed to support the specified mass. The estimated draft is 0.30 m, leaving approximately 0.20 m of the modeled hull height above the waterline. This result assumes a rectangular hull and does not establish real-world boat safety.
+That explanation makes the tool more educational and gives the user information they can use to compare designs.
+Final recommendation: Keep the first version focused on hull dimensions, total mass, displacement, and estimated draft. Those features form a complete, useful application and are realistic to implement with basic Python and Drafter in three weeks.
+
+
+
+
+
+Part 8: Submit
+In Google docs, with this document open, please click on File > Download > Microsoft Word (.docx), and make sure you put that download somewhere you can find it again. Then, upload it to the Canvas assignment about selecting or brainstorming your final project. 
+
+When you're done with this assignment, review this page of the Drafter documentation to better prepare for the next step.
