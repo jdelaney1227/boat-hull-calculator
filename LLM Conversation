@@ -1,0 +1,416 @@
+User:
+
+I want to make a website using Drafter with the idea of a boat hull calculator that compares boat speeds and accounts for water density, cargo load, dimensions, and other necessary information. Using this rubric, create relatively simple code for a 100-level computer science course:
+
+Syllabus
+
+
+Announcements
+
+
+UD Tutoring
+
+
+Final Project Requirements (Specs)
+
+
+Final Project Roadmap
+
+
+The final project will involve creating a web application with Drafter. The different steps of the project will be spread across the last several weeks of class.
+
+
+
+
+
+Week 10: Brainstorming & Ideation - You will come up with an idea for your web application. You will brainstorm its goal, details, and functionality.
+
+
+Week 11: Design - You will plan how the site will look and how you will implement the requirements listed on this page.
+
+
+Week 12: Development & Deployment - You will develop the code for your website and deploy it.
+
+
+Week 13: User Testing - You will show your website to peers and get feedback on their experiences using it.
+
+
+Week 14: Updates based on Feedback - You will make updates based on the feedback you receive and reflect on the process of creating your web application.
+
+
+Site Functionality Requirements
+
+
+Below are the requirements that your site must fulfill. Plan ahead so that meeting these requirements is easier as you develop your project.
+
+
+At least 7 routes.
+
+
+At least 5 pages.
+
+
+The implementation of the State dataclass must have at least 4 fields.
+
+
+At least one field must be a list of class instances or a dictionary of class instances.
+
+
+This means that there must be a second dataclass.
+
+
+At least 4 state fields, including the list or dictionary of class instances, must each be meaningfully modified in at least one route; those 4 state fields cannot be constants.
+
+
+At least 3 input fields (TextBox, CheckBox, SelectBox, TextArea). They don't have to be the same type.
+
+
+At least 3 meaningful if statements.
+
+
+At least 1 loop that iterates over an attribute of the list of class instances or dictionary of class instances in a meaningful way.
+
+
+The site should have a legitimate purpose or functionality.
+
+
+No global variables (global constantsLinks to an external site. are fine).
+
+
+You must use the Drafter library.
+
+
+Any advanced coding techniques (i.e. that weren't covered in this course) used are thoroughly documented in the code.
+
+
+More creative and impressive designs are given flexibility on the above requirements - impress us! However, impressive websites tend to do more than the above requirements. Further, if you miss more than 2 requirements, you will get no credit for that submission. For example, missing a second dataclass means you would be missing not only that requirement, but also the list or dictionary of such dataclass instances, and the loop iterating over that list. This would mean that the submission would get a zero.
+
+
+
+
+
+Code Requirements
+
+
+Make sure your program and website runs; broken programs do not earn points. This means that if your program contains a syntax error or runs and doesn't deploy a website, you get zero points for this assignment, and are subject to any other penalties listed in the syllabus.
+
+
+Once you are finished with your project code, check over the following:
+
+
+Chosen good variable names (check last two sections of Chapter 1B1Links to an external site.)
+
+
+Unit tested your functions where possible, being valid and thoroughLinks to an external site.: each route must have at least one unit test, if possible (routes that have randomization are difficult to unit test, so they are not required to).
+
+
+If a function can't be unit tested, you must note as much in a docstring or comment.
+
+
+Broke up excessively long lines (80 characters is a good rule of thumb, but we'll be strict about not exceeding 120 characters)
+
+
+Included types in your function headers
+
+
+Included good docstrings Links to an external site.as the first line of your function's body
+
+
+Decomposed complicated functions with helper functions
+
+
+Your TA will be grading your code's quality based on the ideas above.
+
+
+
+
+
+Repository Requirements
+
+
+Your final project's GitHub repository should meet the following requirements.
+
+
+
+
+
+Planning document should be uploaded to the repository.
+
+
+Website should be deployed without error.
+
+
+Site information should be set in main.py using set_site_information(...).
+
+
+When changing/adding files in the repository, commit messages should be concise and descriptive, not the default "Update (filename)" message.
+
+
+A video fulfilling the following requirements should be linked in the repository.
+
+
+Shows functioning deployed website
+
+
+Audible and visible
+
+
+Accesses and explains all necessary parts of the website
+
+
+All conversations with any AI should be uploaded to the repository.
+
+
+The above are either present on the final rubric or are necessary for your site to be graded.
+
+
+
+
+LLM:
+The spec shows that my first starter wasn’t enough: it had two routes, one dataclass, and no list of instances. Here is a redesign that covers every requirement. It’s a Hull Comparison Notebook, where you add several boat hulls and compare them.
+Requirement check
+Routes (8): index, add_page, add_hull, fleet, remove_last, settings, set_water, summary
+Pages (5): index, add_page, fleet, settings, summary
+State fields (4): hulls, water_type, message, adds_count, each changed in a route
+Second dataclass: Hull, and State.hulls is a list of them
+Inputs (5): name, length, beam, and weight TextBoxes, plus a water-type SelectBox
+Loops over the list: fastest_hull and total_weight read hull.speed and hull.weight
+Ifs: input validation, empty-list checks, and the water-type check
+Globals: only constants
+python
+from bakery import assert_equal
+from drafter import *
+from dataclasses import dataclass
+
+FRESH_DENSITY = 62.4  # pounds per cubic foot
+SALT_DENSITY = 64.0
+SPEED_FACTOR = 1.34   # hull speed (knots) = factor * sqrt(waterline ft)
+
+
+@dataclass
+class Hull:
+    """One boat hull and its calculated results."""
+    name: str
+    length: float
+    beam: float
+    weight: float
+    speed: float
+    draft: float
+
+
+@dataclass
+class State:
+    """Everything the site remembers between pages."""
+    hulls: list[Hull]
+    water_type: str
+    message: str
+    adds_count: int
+
+
+def water_density(water_type: str) -> float:
+    """Return water density in lb/ft^3 for 'Salt' or 'Fresh' water."""
+    if water_type == "Salt":
+        return SALT_DENSITY
+    return FRESH_DENSITY
+
+
+def hull_speed(length: float) -> float:
+    """Return approximate hull speed in knots from waterline length."""
+    return SPEED_FACTOR * length ** 0.5
+
+
+def hull_draft(weight: float, length: float, beam: float,
+               density: float) -> float:
+    """Return how deep a box-shaped hull sits, in feet."""
+    return weight / (density * length * beam)
+
+
+def is_positive_number(text: str) -> bool:
+    """Return True if text is a number greater than zero."""
+    cleaned = text.replace(".", "", 1)
+    return cleaned.isdigit() and float(text) > 0
+
+
+def fastest_hull(hulls: list[Hull]) -> str:
+    """Return the name of the fastest hull, or '' if the list is empty."""
+    best_name = ""
+    best_speed = 0.0
+    for hull in hulls:
+        if hull.speed > best_speed:
+            best_speed = hull.speed
+            best_name = hull.name
+    return best_name
+
+
+def total_weight(hulls: list[Hull]) -> float:
+    """Return the combined weight of all hulls."""
+    total = 0.0
+    for hull in hulls:
+        total += hull.weight
+    return total
+
+
+@route
+def index(state: State) -> Page:
+    """Home page."""
+    return Page(state, [
+        Header("Hull Comparison Notebook"),
+        "Compare boat hulls by speed and draft.",
+        state.message,
+        Button("Add a hull", add_page),
+        Button("See my hulls", fleet),
+        Button("Summary", summary),
+        Button("Water settings", settings),
+    ])
+
+
+@route
+def add_page(state: State) -> Page:
+    """Form for entering a new hull."""
+    return Page(state, [
+        Header("Add a Hull"),
+        "Name", TextBox("name", "Hull " + str(state.adds_count + 1)),
+        "Waterline length (ft)", TextBox("length", "25"),
+        "Beam (ft)", TextBox("beam", "8"),
+        "Weight (lb)", TextBox("weight", "3200"),
+        Button("Add", add_hull),
+        Button("Cancel", index),
+    ])
+
+
+@route
+def add_hull(state: State, name: str, length: str, beam: str,
+             weight: str) -> Page:
+    """Validate the form, then store a new Hull in the state."""
+    if not (is_positive_number(length) and is_positive_number(beam)
+            and is_positive_number(weight)):
+        state.message = "Length, beam, and weight must be positive numbers."
+        return index(state)
+    length_ft = float(length)
+    beam_ft = float(beam)
+    weight_lb = float(weight)
+    density = water_density(state.water_type)
+    new_hull = Hull(name, length_ft, beam_ft, weight_lb,
+                    hull_speed(length_ft),
+                    hull_draft(weight_lb, length_ft, beam_ft, density))
+    state.hulls.append(new_hull)
+    state.adds_count += 1
+    state.message = "Added " + name + "."
+    return fleet(state)
+
+
+@route
+def fleet(state: State) -> Page:
+    """List every hull that has been added."""
+    content = [Header("My Hulls"), state.message]
+    if len(state.hulls) == 0:
+        content.append("No hulls yet.")
+    for hull in state.hulls:
+        content.append(f"{hull.name}: {hull.speed:.1f} knots, "
+                       f"draft {hull.draft:.2f} ft")
+    content.append(Button("Remove last hull", remove_last))
+    content.append(Button("Home", index))
+    return Page(state, content)
+
+
+@route
+def remove_last(state: State) -> Page:
+    """Delete the most recently added hull."""
+    if len(state.hulls) > 0:
+        removed = state.hulls.pop()
+        state.message = "Removed " + removed.name + "."
+    else:
+        state.message = "Nothing to remove."
+    return fleet(state)
+
+
+@route
+def settings(state: State) -> Page:
+    """Choose salt or fresh water."""
+    return Page(state, [
+        Header("Water Settings"),
+        "Current: " + state.water_type,
+        SelectBox("water", ["Salt", "Fresh"], state.water_type),
+        Button("Save", set_water),
+    ])
+
+
+@route
+def set_water(state: State, water: str) -> Page:
+    """Save the chosen water type."""
+    state.water_type = water
+    state.message = "Water set to " + water + " (applies to new hulls)."
+    return index(state)
+
+
+@route
+def summary(state: State) -> Page:
+    """Show the fastest hull and total weight."""
+    if len(state.hulls) == 0:
+        state.message = "Add a hull first."
+        return index(state)
+    return Page(state, [
+        Header("Summary"),
+        "Fastest hull: " + fastest_hull(state.hulls),
+        f"Total weight: {total_weight(state.hulls):.0f} lb",
+        Button("Home", index),
+    ])
+
+
+# Unit tests for the helper functions
+assert_equal(hull_speed(25.0), 6.7)
+assert_equal(hull_draft(3200.0, 25.0, 8.0, 64.0), 0.25)
+assert_equal(is_positive_number("12.5"), True)
+assert_equal(is_positive_number("-3"), False)
+assert_equal(is_positive_number("abc"), False)
+assert_equal(water_density("Salt"), 64.0)
+assert_equal(total_weight([Hull("a", 1, 1, 100, 1, 1),
+                           Hull("b", 1, 1, 50, 1, 1)]), 150.0)
+assert_equal(fastest_hull([]), "")
+
+set_site_information(
+    author="jackdel@udel.edu",
+    description="Compare boat hulls by speed and draft.",
+    sources=["https://en.wikipedia.org/wiki/Hull_speed"],
+    planning="planning.pdf",
+    links=[],
+)
+start_server(State([], "Salt", "", 0))
+Things to check before relying on it. I haven’t run any of this.
+set_site_information arguments: these come from my memory of Drafter, so check the names against the docs page the spec links.
+Route-calling pattern: add_hull and the others return another route by calling it (return fleet(state)). Make sure Drafter in your version accepts that. If it doesn’t, use goto_route.
+Route unit tests: the spec wants one per route, and I only wrote tests for the helpers. Writing the route tests is a good next step, since each route builds a Page.
+Hull speed formula: this is the displacement-hull rule of thumb, and the box-shaped draft is a big simplification. Say both on the site so the “legitimate purpose” is honest.
+Since this is a design step, go through each function until you can explain it to a TA. The spec also wants this chat uploaded to your repo.
+
+User:
+With the code that was given, explain to me what it does.
+
+LLM:
+
+The code I gave you is the Hull Comparison Notebook. It’s a Drafter website where you add boat hulls one at a time and compare them. I haven’t run it, so treat everything below as what it’s designed to do.
+The data
+Hull is a dataclass holding one boat: its name, length, beam, weight, and two calculated results (speed and draft).
+State is the dataclass Drafter carries from page to page. It holds the list of hulls, the water type, a message to show the user, and a counter of how many hulls have been added.
+The helper functions (plain math and checks, no web stuff)
+water_density returns 64.0 for salt water and 62.4 for fresh.
+hull_speed returns 1.34 × √length, the standard rule of thumb for a boat’s top speed in knots.
+hull_draft divides the weight by (density × length × beam), which gives how deep the hull sits in the water if it were a box.
+is_positive_number checks that a text box entry is a number above zero.
+fastest_hull and total_weight loop through the list of hulls to find the fastest one and add up the weights.
+The routes (the pages and actions)
+index is the home page with buttons.
+add_page shows the form with a text box for each measurement.
+add_hull runs when the user clicks “Add”. It validates the inputs, then creates a Hull, calculates its speed and draft, appends it to state.hulls, and sends the user to the list.
+fleet loops through state.hulls and shows each hull’s results.
+remove_last deletes the most recent hull.
+settings and set_water let the user pick salt or fresh water.
+summary shows the fastest hull and the total weight.
+The bottom of the file
+The assert_equal lines are unit tests for the helper functions. They run when the program starts.
+set_site_information fills in the site details the spec requires.
+start_server launches the site with an empty hull list, salt water, an empty message, and a count of zero.
+An important mismatch: that code calculates speed and draft, but your goal is whether the boat floats and how much cargo it holds. The diagram and the table notes I gave you later use a different Hull, with depth, floats, and cargo_capacity. The code never got updated to match, so right now the code and your design don’t agree.
+To fix that, Hull needs a depth field, and add_hull needs a float check and a cargo calculation in place of the speed and draft ones. Want me to walk you through that change step by step, so you understand each edit?
+
+
