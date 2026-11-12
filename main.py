@@ -193,6 +193,6 @@ set_site_information(
     description="Compare boat hulls by speed and draft.",
     sources=["https://en.wikipedia.org/wiki/Hull_speed"],
     planning="planning.pdf",
-    links=[],
+    links=[https://github.com/jdelaney1227/boat-hull-calculator],
 )
 start_server(State([], "Salt", "", 0))
